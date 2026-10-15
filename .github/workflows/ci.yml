@@ -1,0 +1,39 @@
+name: Validate demo
+on: [push, pull_request]
+permissions:
+  contents: read
+jobs:
+  unit:
+    runs-on: ubuntu-latest
+    env:
+      PYTEST_DISABLE_PLUGIN_AUTOLOAD: '1'
+      PHOENIX_WORKING_DIR: /tmp/phoenix-ci
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+          cache: pip
+      - run: pip install -r requirements.txt
+      - run: python -m pytest -q
+      - run: python -m compileall -q guardian investigator scripts
+  integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+      - run: docker compose up --build -d
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install gradio-client==2.7.2 httpx==0.28.1
+      - run: python scripts/verify.py --wait 240 --output reports/ci.local.json
+      - if: always()
+        run: docker compose logs --tail 60
+      - if: always()
+        run: docker compose down
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: integration-results
+          path: reports/ci.local.json

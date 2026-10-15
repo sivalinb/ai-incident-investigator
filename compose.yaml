@@ -1,0 +1,56 @@
+services:
+  exporter:
+    build: .
+    command: [python, demo/exporter.py, --host, 0.0.0.0, --port, '9115']
+    restart: unless-stopped
+  prometheus:
+    image: prom/prometheus:v3.15.0
+    command: [--config.file=/etc/prometheus/prometheus.yml, --storage.tsdb.path=/prometheus, --web.listen-address=0.0.0.0:9095]
+    volumes:
+      - ./observability/prometheus.container.yml:/etc/prometheus/prometheus.yml:ro
+      - prometheus:/prometheus
+    ports: ['127.0.0.1:9095:9095']
+    restart: unless-stopped
+  grafana:
+    image: grafana/grafana:12.3.6
+    environment:
+      GF_SERVER_HTTP_PORT: '3015'
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: local-demo-only
+      GF_AUTH_ANONYMOUS_ENABLED: 'true'
+      GF_AUTH_ANONYMOUS_ORG_ROLE: Viewer
+      GF_ANALYTICS_REPORTING_ENABLED: 'false'
+      GF_PLUGINS_PREINSTALL_DISABLED: 'true'
+    ports: ['127.0.0.1:3015:3015']
+    volumes: [grafana:/var/lib/grafana]
+    restart: unless-stopped
+  phoenix:
+    build: .
+    command: [python, -m, phoenix.server.main, serve]
+    environment:
+      PHOENIX_HOST: 0.0.0.0
+      PHOENIX_PORT: '6008'
+      PHOENIX_WORKING_DIR: /app/.runtime/phoenix
+      PHOENIX_GRPC_PORT: '4317'
+    ports: ['127.0.0.1:6008:6008']
+    volumes: [phoenix:/app/.runtime/phoenix]
+    restart: unless-stopped
+  investigator:
+    build: .
+    environment:
+      OI_ADVISOR_MODE: ${OI_ADVISOR_MODE:-fixture}
+      OLLAMA_URL: http://host.docker.internal:11434
+      OLLAMA_MODEL: ${OLLAMA_MODEL:-}
+      OTEL_EXPORTER_OTLP_TRACES_ENDPOINT: http://phoenix:6008/v1/traces
+      OI_GRAFANA_PUBLIC_URL: http://127.0.0.1:3015
+      OI_PHOENIX_PUBLIC_URL: http://127.0.0.1:6008
+    extra_hosts: [host.docker.internal:host-gateway]
+    ports: ['127.0.0.1:7868:7868']
+    volumes: [investigator:/app/.runtime/investigator]
+    depends_on: [grafana, prometheus, exporter, phoenix]
+    restart: unless-stopped
+volumes:
+  prometheus:
+  grafana:
+  phoenix:
+  investigator:

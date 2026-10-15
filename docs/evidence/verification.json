@@ -1,0 +1,14 @@
+{
+  "status": "passed",
+  "provenance": "real_grafana_prometheus_and_openinference_with_synthetic_workload",
+  "incident_id": "a7e85c13d4fd",
+  "trace_id": "75e9b89cdb0a83070a92a75874ac0e03",
+  "advisor_mode": "ollama",
+  "screenshots": {
+    "before": true,
+    "after": true
+  },
+  "checks": 4,
+  "scope_preserved": true,
+  "review_trace_linked": true
+}

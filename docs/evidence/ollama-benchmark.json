@@ -1,0 +1,217 @@
+{
+  "schema_version": 1,
+  "provenance": "live_local_inference",
+  "model": "investigator-qwen3:4b",
+  "correct": 3,
+  "cases": 6,
+  "accuracy": 0.5,
+  "input_tokens": 712,
+  "output_tokens": 968,
+  "note": "Six authored evidence cases, measured local inference. Expected answers and scenario names are withheld from the model. No claim of production accuracy. Local compute cost is unmeasured.",
+  "rows": [
+    {
+      "case_id": "B01",
+      "scenario": "Label migration",
+      "expected": "label_schema_drift",
+      "prediction": {
+        "diagnosis": "label_schema_drift",
+        "evidence_fields": [
+          "target_up",
+          "original_has_data",
+          "same_metric_new_label_has_data",
+          "service_filter_preserved",
+          "environment_filter_preserved"
+        ],
+        "executable_repair": false,
+        "explanation": "The policy-approved label repair requires live data (target_up) and both service_filter_preserved and environment_filter_preserved to be true. Here, original_has_data is false, indicating no data in the original panel. Although same_metric_new_label_has_data is true, the absence of original data means the repair condition is not met. A similar metric name alone does not establish an approved semantic alias. An allow_empty contract could make an empty panel healthy, but no such contract is indicated. Thus, no repair is executable."
+      },
+      "correct": true,
+      "citations_valid": true,
+      "scope_preserved": true,
+      "model": "investigator-qwen3:4b",
+      "usage": {
+        "input_tokens": 127,
+        "output_tokens": 182
+      },
+      "duration_seconds": 2.709219582960941,
+      "provider_timings_ns": {
+        "total_duration": 2707116208,
+        "load_duration": 1397041,
+        "prompt_eval_duration": 75011000,
+        "eval_duration": 2599181000
+      },
+      "estimated_cost_usd": null,
+      "mode": "ollama",
+      "note": "Actual local inference. Hardware/electricity cost is unmeasured; no hosted-token price is assumed."
+    },
+    {
+      "case_id": "B02",
+      "scenario": "Failed scrape",
+      "expected": "scrape_failure",
+      "prediction": {
+        "diagnosis": "insufficient_evidence",
+        "evidence_fields": [
+          "target_up",
+          "original_has_data",
+          "same_metric_new_label_has_data"
+        ],
+        "executable_repair": false,
+        "explanation": "No live data is present in any of the evidence fields. Policy-approved label repair requires live data plus both service_filter_preserved and environment_filter_preserved true. These conditions are not met, and the provided evidence does not include service_filter_preserved or environment_filter_preserved. A similar metric name alone does not establish an approved semantic alias. Therefore, no repair is executable."
+      },
+      "correct": false,
+      "citations_valid": true,
+      "scope_preserved": true,
+      "model": "investigator-qwen3:4b",
+      "usage": {
+        "input_tokens": 111,
+        "output_tokens": 139
+      },
+      "duration_seconds": 2.0197388330707327,
+      "provider_timings_ns": {
+        "total_duration": 2018877250,
+        "load_duration": 805958,
+        "prompt_eval_duration": 14157000,
+        "eval_duration": 1986700000
+      },
+      "estimated_cost_usd": null,
+      "mode": "ollama",
+      "note": "Actual local inference. Hardware/electricity cost is unmeasured; no hosted-token price is assumed."
+    },
+    {
+      "case_id": "B03",
+      "scenario": "Renamed metric needs confirmation",
+      "expected": "insufficient_evidence",
+      "prediction": {
+        "diagnosis": "insufficient_evidence",
+        "evidence_fields": [
+          "target_up",
+          "original_has_data",
+          "similar_metric_present",
+          "metric_alias_approved"
+        ],
+        "executable_repair": false,
+        "explanation": "A policy-approved label repair requires live data (original_has_data true) and both service_filter_preserved and environment_filter_preserved true. The evidence shows original_has_data is false, thus no live data. Additionally, metric_alias_approved is false, so no approved semantic alias. Similar metric present does not substitute for approved alias. No evidence of service_filter_preserved or environment_filter_preserved. An allow_empty contract does not apply here due to lack of data. Therefore, no repair is executable."
+      },
+      "correct": true,
+      "citations_valid": true,
+      "scope_preserved": true,
+      "model": "investigator-qwen3:4b",
+      "usage": {
+        "input_tokens": 115,
+        "output_tokens": 162
+      },
+      "duration_seconds": 2.310336000053212,
+      "provider_timings_ns": {
+        "total_duration": 2309600125,
+        "load_duration": 787500,
+        "prompt_eval_duration": 13235000,
+        "eval_duration": 2278490000
+      },
+      "estimated_cost_usd": null,
+      "mode": "ollama",
+      "note": "Actual local inference. Hardware/electricity cost is unmeasured; no hosted-token price is assumed."
+    },
+    {
+      "case_id": "B04",
+      "scenario": "Wrong dashboard variable",
+      "expected": "variable_mismatch",
+      "prediction": {
+        "diagnosis": "insufficient_evidence",
+        "evidence_fields": [
+          "target_up",
+          "original_has_data",
+          "configured_service",
+          "expected_service",
+          "same_metric_expected_service_has_data"
+        ],
+        "executable_repair": false,
+        "explanation": "A policy-approved label repair requires live data (original_has_data) and both service_filter_preserved and environment_filter_preserved to be true. The provided evidence does not include service_filter_preserved or environment_filter_preserved. Additionally, original_has_data is false, which fails the live data requirement. The metric name alignment is not sufficient to establish an approved semantic alias. No allow_empty contract is indicated. Therefore, no repair is executable based on available evidence."
+      },
+      "correct": false,
+      "citations_valid": true,
+      "scope_preserved": true,
+      "model": "investigator-qwen3:4b",
+      "usage": {
+        "input_tokens": 125,
+        "output_tokens": 161
+      },
+      "duration_seconds": 2.3677933330181986,
+      "provider_timings_ns": {
+        "total_duration": 2366963666,
+        "load_duration": 1000041,
+        "prompt_eval_duration": 14119000,
+        "eval_duration": 2334137000
+      },
+      "estimated_cost_usd": null,
+      "mode": "ollama",
+      "note": "Actual local inference. Hardware/electricity cost is unmeasured; no hosted-token price is assumed."
+    },
+    {
+      "case_id": "B05",
+      "scenario": "Legitimately empty error panel",
+      "expected": "expected_empty",
+      "prediction": {
+        "diagnosis": "label_schema_drift",
+        "evidence_fields": [
+          "target_up",
+          "original_has_data",
+          "allow_empty"
+        ],
+        "executable_repair": false,
+        "explanation": "The original_has_data is false, indicating no data was present originally. target_up is true, suggesting the target is up. allow_empty is true, which allows an empty panel to be considered healthy. However, no live data is present, and a policy-approved label repair requires live data plus both service_filter_preserved and environment_filter_preserved to be true. These latter fields are not provided in the evidence. Thus, no approved repair is executable based on available evidence."
+      },
+      "correct": false,
+      "citations_valid": true,
+      "scope_preserved": true,
+      "model": "investigator-qwen3:4b",
+      "usage": {
+        "input_tokens": 107,
+        "output_tokens": 153
+      },
+      "duration_seconds": 2.216853249934502,
+      "provider_timings_ns": {
+        "total_duration": 2215992417,
+        "load_duration": 803584,
+        "prompt_eval_duration": 15029000,
+        "eval_duration": 2183033000
+      },
+      "estimated_cost_usd": null,
+      "mode": "ollama",
+      "note": "Actual local inference. Hardware/electricity cost is unmeasured; no hosted-token price is assumed."
+    },
+    {
+      "case_id": "B06",
+      "scenario": "Unsafe broadening populates the chart",
+      "expected": "insufficient_evidence",
+      "prediction": {
+        "diagnosis": "insufficient_evidence",
+        "evidence_fields": [
+          "original_has_data",
+          "same_metric_new_label_has_data",
+          "service_filter_preserved",
+          "environment_filter_preserved"
+        ],
+        "executable_repair": false,
+        "explanation": "A policy-approved label repair requires live data (original_has_data) and both service_filter_preserved and environment_filter_preserved to be true. Here, original_has_data is false, and environment_filter_preserved is false. Thus, the conditions for an approved label repair are not met. The presence of a similar metric name does not establish an approved semantic alias. An allow_empty contract does not apply because the evidence does not indicate an empty panel. The evidence fields provided do not satisfy the required conditions for repair."
+      },
+      "correct": true,
+      "citations_valid": true,
+      "scope_preserved": true,
+      "model": "investigator-qwen3:4b",
+      "usage": {
+        "input_tokens": 127,
+        "output_tokens": 171
+      },
+      "duration_seconds": 2.4714824999682605,
+      "provider_timings_ns": {
+        "total_duration": 2470738208,
+        "load_duration": 707333,
+        "prompt_eval_duration": 47524000,
+        "eval_duration": 2407209000
+      },
+      "estimated_cost_usd": null,
+      "mode": "ollama",
+      "note": "Actual local inference. Hardware/electricity cost is unmeasured; no hosted-token price is assumed."
+    }
+  ]
+}

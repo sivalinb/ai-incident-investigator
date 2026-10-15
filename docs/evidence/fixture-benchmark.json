@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "provenance": "authored_fixture",
+  "note": "Six transparent fixtures compare two deterministic strategies. These scores do not measure a live LLM or production accuracy. Durations include local tracing overhead.",
+  "summary": [
+    {
+      "strategy": "evidence_rules",
+      "correct": 6,
+      "cases": 6,
+      "accuracy": 1.0,
+      "median_duration_ms": 0.1305
+    },
+    {
+      "strategy": "naive_nonempty",
+      "correct": 2,
+      "cases": 6,
+      "accuracy": 0.3333333333333333,
+      "median_duration_ms": 0.118
+    }
+  ],
+  "rows": [
+    {
+      "case_id": "B01",
+      "scenario": "Label migration",
+      "strategy": "evidence_rules",
+      "expected": "label_schema_drift",
+      "actual": "label_schema_drift",
+      "correct": true,
+      "duration_ms": 0.303,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B02",
+      "scenario": "Failed scrape",
+      "strategy": "evidence_rules",
+      "expected": "scrape_failure",
+      "actual": "scrape_failure",
+      "correct": true,
+      "duration_ms": 0.177,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B03",
+      "scenario": "Renamed metric needs confirmation",
+      "strategy": "evidence_rules",
+      "expected": "insufficient_evidence",
+      "actual": "insufficient_evidence",
+      "correct": true,
+      "duration_ms": 0.144,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B04",
+      "scenario": "Wrong dashboard variable",
+      "strategy": "evidence_rules",
+      "expected": "variable_mismatch",
+      "actual": "variable_mismatch",
+      "correct": true,
+      "duration_ms": 0.117,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B05",
+      "scenario": "Legitimately empty error panel",
+      "strategy": "evidence_rules",
+      "expected": "expected_empty",
+      "actual": "expected_empty",
+      "correct": true,
+      "duration_ms": 0.105,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B06",
+      "scenario": "Unsafe broadening populates the chart",
+      "strategy": "evidence_rules",
+      "expected": "insufficient_evidence",
+      "actual": "insufficient_evidence",
+      "correct": true,
+      "duration_ms": 0.099,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B01",
+      "scenario": "Label migration",
+      "strategy": "naive_nonempty",
+      "expected": "label_schema_drift",
+      "actual": "label_schema_drift",
+      "correct": true,
+      "duration_ms": 0.118,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B02",
+      "scenario": "Failed scrape",
+      "strategy": "naive_nonempty",
+      "expected": "scrape_failure",
+      "actual": "scrape_failure",
+      "correct": true,
+      "duration_ms": 0.259,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B03",
+      "scenario": "Renamed metric needs confirmation",
+      "strategy": "naive_nonempty",
+      "expected": "insufficient_evidence",
+      "actual": "scrape_failure",
+      "correct": false,
+      "duration_ms": 0.127,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B04",
+      "scenario": "Wrong dashboard variable",
+      "strategy": "naive_nonempty",
+      "expected": "variable_mismatch",
+      "actual": "scrape_failure",
+      "correct": false,
+      "duration_ms": 0.118,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B05",
+      "scenario": "Legitimately empty error panel",
+      "strategy": "naive_nonempty",
+      "expected": "expected_empty",
+      "actual": "scrape_failure",
+      "correct": false,
+      "duration_ms": 0.113,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    },
+    {
+      "case_id": "B06",
+      "scenario": "Unsafe broadening populates the chart",
+      "strategy": "naive_nonempty",
+      "expected": "insufficient_evidence",
+      "actual": "label_schema_drift",
+      "correct": false,
+      "duration_ms": 0.115,
+      "provenance": "authored_fixture",
+      "tokens": null,
+      "cost_usd": null
+    }
+  ]
+}
