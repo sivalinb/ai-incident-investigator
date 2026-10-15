@@ -252,5 +252,10 @@ class Grafana:
                 subprocess.run([os.environ.get("NODE_BIN", "node"), str(helper)], input=json.dumps(payload),
                                text=True, capture_output=True, check=True, timeout=50)
             return {"available": True, "path": output.name}
+        except subprocess.CalledProcessError as exc:
+            # Runtime-only diagnostics help distinguish a missing browser from render errors.
+            # The helper receives authentication on stdin, never command-line arguments.
+            output.with_suffix('.capture-error.log').write_text((exc.stderr or 'Screenshot helper failed')[:12000])
+            return {"available": False, "reason": "Screenshot helper failed; inspect the runtime capture-error.log"}
         except (subprocess.SubprocessError, OSError, GrafanaError, ValueError) as exc:
             return {"available": False, "reason": "Capture failed: " + type(exc).__name__}
